@@ -8,3 +8,5 @@ const User = mongoose.model('user',{
         trim: true
     }
 })
+
+module.exports = {User}
