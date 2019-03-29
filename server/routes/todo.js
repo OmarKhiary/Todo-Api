@@ -12,4 +12,5 @@ router.patch('/todos/:id', updateTodo);
 // DELETE ROUTE DELETE TODO
 router.delete('/todos/:id', deleteTodo);
 
+module.exports = router;
 

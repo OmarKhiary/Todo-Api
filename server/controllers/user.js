@@ -10,6 +10,18 @@ const createUser = async(req, res) => {
         res.status(400).send(error);
     }
 }
+
+// LOGIN USER func 
+const login = async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        res.send(user);
+        console.log('User Logged In');
+    } catch(error) {
+        res.status(400).send();
+    } 
+}
+
 // GET ALL USERS func 
 const getUsers = async (req, res) => {
     try {
@@ -43,8 +55,12 @@ const updateUser = async (req, res) => {
         return res.status(400).send({error: 'Invalid Updates'});
     }
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, {new : true, runValidators: true});
-        
+        const user = await User.findById(req.params.id);
+        console.log(`****${user}****`);
+        console.log(updates);
+        console.log(req.body);        
+        updates.forEach((update) => user[update] = req.body[update]);
+        await user.save();
         if(!user){
             return res.status(404).send();
         }
@@ -67,4 +83,4 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = {createUser, getUsers, getUser, updateUser, deleteUser};
+module.exports = {createUser, login ,getUsers, getUser, updateUser, deleteUser};

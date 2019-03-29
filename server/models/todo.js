@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Todo = mongoose.model('Todo',{
-    text: {
+    description: {
         type: String,
         required: true,
         minlength: 1,
@@ -10,10 +10,6 @@ const Todo = mongoose.model('Todo',{
     completed: {
         type: Boolean,
         default: false
-    },
-    completedAt :{
-        type: Number,
-        default: null
     }
 }); 
 

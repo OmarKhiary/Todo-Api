@@ -26,7 +26,7 @@ const getTodos = async (req, res) => {
     }
 };
 // GET SINGLE TODO func
-const getTodo = (req, res) => {
+const getTodo = async (req, res) => {
     const _id = req.params.id;
     // if(!ObjectID.isValid(id)){
     //   return  res.status(404).send();
@@ -53,7 +53,10 @@ const updateTodo = async (req, res) => {
         return res.status(400).send({error: 'Invalid Updates'});
     }
     try {
-        const todo = await todo.findByIdAndUpdate(req.params.id, req.body, {new : true, runValidators: true});
+        const todo = await todo.findById(req.params.id);
+        updates.forEach((update) => todo[update] = req.body[update]);
+
+        await todo.save();
         
         if(!todo){
             return res.status(404).send();
@@ -61,12 +64,12 @@ const updateTodo = async (req, res) => {
 
         res.send(todo);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(500).send(error);
     }
 }
 // DELETE TODO func
 
-const deleteTodo = (req, res) => {
+const deleteTodo = async (req, res) => {
     // get the id 
     //const id = req.params.id;
     // if(!ObjectID.isValid(id)){
